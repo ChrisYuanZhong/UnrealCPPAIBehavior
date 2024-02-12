@@ -14,5 +14,12 @@ class AIBEHAVIOR_API UChaseState : public UBaseState
 {
 	GENERATED_BODY()
 
-	void Update(AAIEnemy* character, float DeltaTime) override;
+public:
+	void Update(AAIEnemy* character, const float DeltaTime) override;
+
+	void OnEnter(AAIEnemy* character) override;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Chase")
+	float ChaseSpeed = 400.0f;
 };

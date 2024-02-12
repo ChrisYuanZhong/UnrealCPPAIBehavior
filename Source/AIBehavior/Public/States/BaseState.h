@@ -16,7 +16,7 @@ class AIBEHAVIOR_API UBaseState : public UObject
 	
 public:
 	UFUNCTION(BlueprintCallable, Category = "State")
-	virtual void Update(AAIEnemy* character, float DeltaTime);
+	virtual void Update(AAIEnemy* character, const float DeltaTime);
 
 	UFUNCTION(BlueprintCallable, Category = "State")
 	virtual void OnEnter(AAIEnemy* character);

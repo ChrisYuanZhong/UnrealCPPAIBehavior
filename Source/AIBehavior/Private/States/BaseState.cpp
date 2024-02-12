@@ -3,7 +3,7 @@
 
 #include "States/BaseState.h"
 
-void UBaseState::Update(AAIEnemy* character, float DeltaTime)
+void UBaseState::Update(AAIEnemy* character, const float DeltaTime)
 {
 }
 

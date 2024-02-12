@@ -36,16 +36,28 @@ void AAIEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void AAIEnemy::OnMoveCompleted()
+void AAIEnemy::ChangeStateTo(const TSubclassOf<UBaseState> NewState)
 {
-	// Wait for 2 seconds
-	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &AAIEnemy::SetNotMoving, 2.0f, false);
+	// Destroy the current state
+	//CurrentState->BeginDestroy();
+	//CurrentState = nullptr;
+
+	CurrentState = NewObject<UBaseState>(this, NewState);
+
+	OnStateChange();
 }
 
-void AAIEnemy::SetNotMoving()
+void AAIEnemy::OnStateChange()
 {
-	bIsMoving = false;
+	CurrentState->OnEnter(this);
+}
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Move Completed"));
+void AAIEnemy::OnMoveCompleted()
+{
+	if (UWanderState* wanderState = Cast<UWanderState>(CurrentState))
+	{
+		// Wait for 2 seconds and call the SetNotMoving function from the wanderState
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, wanderState, &UWanderState::SetNotMoving, 2.0f, false);
+	}
 }

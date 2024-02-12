@@ -28,8 +28,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float RangeOfDanger = 200.0f;
 
-	bool bIsMoving = false;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -41,9 +39,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintCallable)
-	void OnMoveCompleted();
+	UFUNCTION(BlueprintCallable, Category = "State Machine")
+	void ChangeStateTo(const TSubclassOf<UBaseState> NewState);
+
+	UFUNCTION(BlueprintCallable, Category = "State Machine")
+	void OnStateChange();
 
 	UFUNCTION(BlueprintCallable)
-	void SetNotMoving();
+	void OnMoveCompleted();
 };

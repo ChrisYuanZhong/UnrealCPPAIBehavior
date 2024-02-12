@@ -8,18 +8,21 @@
 #include "FleeEnemy.h"
 #include "ChaseEnemy.h"
 #include <States/FleeState.h>
+#include <States/ChaseState.h>
+#include <States/AttackState.h>
+#include <States/DashState.h>
 #include <NavigationSystem.h>
 #include <MyAIController.h>
 #include <GameFramework/CharacterMovementComponent.h>
 
-void UWanderState::Update(AAIEnemy* character, float DeltaTime)
+void UWanderState::Update(AAIEnemy* character, const float DeltaTime)
 {
 	// Wander around
-	if (!character->bIsMoving)
+	if (!bIsMoving)
 	{
 		// Set a new destination
 		NewDestination(character);
-		character->bIsMoving = true;
+		bIsMoving = true;
 	}
 
 	// Calculate the distance to the player
@@ -34,6 +37,9 @@ void UWanderState::Update(AAIEnemy* character, float DeltaTime)
 			// Change the state to Dash
 			// Print a message
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Dash"));
+
+			AFleeEnemy* fleeEnemy = Cast<AFleeEnemy>(character);
+			fleeEnemy->ChangeStateTo(UDashState::StaticClass());
 		}
 		// If the character is a ChaseEnemy
 		else if (character->IsA(AChaseEnemy::StaticClass()))
@@ -41,6 +47,9 @@ void UWanderState::Update(AAIEnemy* character, float DeltaTime)
 			// Change the state to Attack
 			// Print a message
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Attack"));
+
+			AChaseEnemy* chaseEnemy = Cast<AChaseEnemy>(character);
+			chaseEnemy->ChangeStateTo(UAttackState::StaticClass());
 		}
 	}
 	else if (distance < character->RangeOfSight)
@@ -52,8 +61,8 @@ void UWanderState::Update(AAIEnemy* character, float DeltaTime)
 			// Print a message
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Flee"));
 
-			//AFleeEnemy* fleeEnemy = Cast<AFleeEnemy>(character);
-			//fleeEnemy->CurrentState = NewObject<UFleeState>();
+			AFleeEnemy* fleeEnemy = Cast<AFleeEnemy>(character);
+			fleeEnemy->ChangeStateTo(UFleeState::StaticClass());
 		}
 		// If the character is a ChaseEnemy
 		else if (character->IsA(AChaseEnemy::StaticClass()))
@@ -62,11 +71,18 @@ void UWanderState::Update(AAIEnemy* character, float DeltaTime)
 			// Print a message
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Chase"));
 
-			//AChaseEnemy* chaseEnemy = Cast<AChaseEnemy>(character);
-			//chaseEnemy->CurrentState = NewObject<UChaseState>();
+			AChaseEnemy* chaseEnemy = Cast<AChaseEnemy>(character);
+			chaseEnemy->ChangeStateTo(UChaseState::StaticClass());
 
 		}
 	}
+}
+
+void UWanderState::OnEnter(AAIEnemy* character)
+{
+	// Set the speed of the character
+	UCharacterMovementComponent* CharacterMovement = Cast<UCharacterMovementComponent>(character->GetMovementComponent());
+	CharacterMovement->MaxWalkSpeed = WanderSpeed;
 }
 
 void UWanderState::NewDestination(AAIEnemy* character)
@@ -83,4 +99,11 @@ void UWanderState::NewDestination(AAIEnemy* character)
 			AIController->MoveToLocation(destination.Location, 5.0f);
 		}
 	}
+}
+
+void UWanderState::SetNotMoving()
+{
+	bIsMoving = false;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Move Completed"));
 }

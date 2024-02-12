@@ -7,18 +7,24 @@
 #include <Kismet/GameplayStatics.h>
 #include "FleeEnemy.h"
 #include "ChaseEnemy.h"
+#include <NavigationSystem.h>
+#include <MyAIController.h>
+#include <GameFramework/CharacterMovementComponent.h>
 
-void UChaseState::Update(AAIEnemy* character, float DeltaTime)
+void UChaseState::Update(AAIEnemy* character, const float DeltaTime)
 {
 	// Chase the player
-	FVector direction = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation() - character->GetActorLocation();
-	direction.Normalize();
-
-	// Move the character
-	character->AddMovementInput(direction, 1.0f);
+	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(character->GetWorld());
+	if (NavSystem)
+	{
+		// Move the character
+		ACharacter* player = UGameplayStatics::GetPlayerCharacter(character->GetWorld(), 0);
+		AMyAIController* AIController = Cast<AMyAIController>(character->GetController());
+		AIController->MoveToActor(player);
+	}
 
 	// Calculate the distance to the player
-	float distance = FVector::Dist(character->GetActorLocation(), UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation());
+	float distance = FVector::Dist(character->GetActorLocation(), UGameplayStatics::GetPlayerCharacter(character->GetWorld(), 0)->GetActorLocation());
 
 	// Check the distance to the player
 	if (distance > character->RangeOfSight)
@@ -31,4 +37,11 @@ void UChaseState::Update(AAIEnemy* character, float DeltaTime)
 		// Change the state to Attack
 
 	}
+}
+
+void UChaseState::OnEnter(AAIEnemy* character)
+{
+	// Set the speed of the character
+	UCharacterMovementComponent* CharacterMovement = Cast<UCharacterMovementComponent>(character->GetMovementComponent());
+	CharacterMovement->MaxWalkSpeed = ChaseSpeed;
 }

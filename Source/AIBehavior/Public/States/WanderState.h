@@ -15,11 +15,20 @@ class AIBEHAVIOR_API UWanderState : public UBaseState
 	GENERATED_BODY()
 	
 public:
-	void Update(AAIEnemy* character, float DeltaTime) override;
+	void Update(AAIEnemy* character, const float DeltaTime) override;
+
+	void OnEnter(AAIEnemy* character) override;
 
 	void NewDestination(AAIEnemy* character);
+
+	void SetNotMoving();
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Wander")
 	float WanderRadius = 1000.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Wander")
+	float WanderSpeed = 300.0f;
+
+	bool bIsMoving = false;
 };
