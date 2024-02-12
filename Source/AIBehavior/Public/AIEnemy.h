@@ -26,7 +26,7 @@ public:
 
 	// Range of Danger
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float RangeOfDanger = 200.0f;
+	float RangeOfDanger = 400.0f;
 
 protected:
 	// Called when the game starts or when spawned

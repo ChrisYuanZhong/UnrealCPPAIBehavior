@@ -3,7 +3,6 @@
 
 #include "States/WanderState.h"
 #include "AIEnemy.h"
-#include "GameFramework/Character.h"
 #include <Kismet/GameplayStatics.h>
 #include "FleeEnemy.h"
 #include "ChaseEnemy.h"
@@ -58,9 +57,6 @@ void UWanderState::Update(AAIEnemy* character, const float DeltaTime)
 		if (character->IsA(AFleeEnemy::StaticClass()))
 		{
 			// Change the state to Flee
-			// Print a message
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Flee"));
-
 			AFleeEnemy* fleeEnemy = Cast<AFleeEnemy>(character);
 			fleeEnemy->ChangeStateTo(UFleeState::StaticClass());
 		}
@@ -68,9 +64,6 @@ void UWanderState::Update(AAIEnemy* character, const float DeltaTime)
 		else if (character->IsA(AChaseEnemy::StaticClass()))
 		{
 			// Change the state to Chase
-			// Print a message
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Chase"));
-
 			AChaseEnemy* chaseEnemy = Cast<AChaseEnemy>(character);
 			chaseEnemy->ChangeStateTo(UChaseState::StaticClass());
 
@@ -104,6 +97,4 @@ void UWanderState::NewDestination(AAIEnemy* character)
 void UWanderState::SetNotMoving()
 {
 	bIsMoving = false;
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Move Completed"));
 }

@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include <Kismet/KismetSystemLibrary.h>
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -86,6 +87,9 @@ void AAIBehaviorCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AAIBehaviorCharacter::Look);
+
+		// Quitting the game
+		PlayerInputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AAIBehaviorCharacter::QuitGame);
 	}
 	else
 	{
@@ -126,5 +130,19 @@ void AAIBehaviorCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void AAIBehaviorCharacter::QuitGame()
+{
+	// Get the world and the player controller
+	UWorld* World = GetWorld();
+	APlayerController* PC = GetController<APlayerController>();
+
+	// Check if they are valid
+	if (World && PC)
+	{
+		// Call the QuitGame function with the desired parameters
+		UKismetSystemLibrary::QuitGame(World, PC, EQuitPreference::Quit, false);
 	}
 }

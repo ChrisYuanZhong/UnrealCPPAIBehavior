@@ -10,3 +10,7 @@ void UBaseState::Update(AAIEnemy* character, const float DeltaTime)
 void UBaseState::OnEnter(AAIEnemy* character)
 {
 }
+
+void UBaseState::OnExit(AAIEnemy* character)
+{
+}

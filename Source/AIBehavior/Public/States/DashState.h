@@ -13,6 +13,15 @@ UCLASS()
 class AIBEHAVIOR_API UDashState : public UBaseState
 {
 	GENERATED_BODY()
+
+public:
+	void Update(AAIEnemy* character, const float DeltaSeconds) override;
 	
 	void OnEnter(AAIEnemy* character) override;
+
+	void OnExit(AAIEnemy* character) override;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Dash")
+	float DashSpeed = 5000.0f;
 };

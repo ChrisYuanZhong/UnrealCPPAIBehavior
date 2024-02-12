@@ -38,6 +38,8 @@ void AAIEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AAIEnemy::ChangeStateTo(const TSubclassOf<UBaseState> NewState)
 {
+	CurrentState->OnExit(this);
+
 	// Destroy the current state
 	//CurrentState->BeginDestroy();
 	//CurrentState = nullptr;

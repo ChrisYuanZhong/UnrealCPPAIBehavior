@@ -20,4 +20,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "State")
 	virtual void OnEnter(AAIEnemy* character);
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	virtual void OnExit(AAIEnemy* character);
 };

@@ -2,8 +2,6 @@
 
 
 #include "States/FleeState.h"
-#include "..\AIBehaviorCharacter.h"
-#include "GameFramework/Character.h"
 #include <Kismet/GameplayStatics.h>
 #include "FleeEnemy.h"
 #include "ChaseEnemy.h"
@@ -15,13 +13,7 @@
 
 void UFleeState::Update(AAIEnemy* character, const float DeltaTime)
 {
-	//// Flee from the player
-	//FVector direction = character->GetActorLocation() - UGameplayStatics::GetPlayerCharacter(character->GetWorld(), 0)->GetActorLocation();
-	//direction.Normalize();
-
-	//// Move the character
-	//character->AddMovementInput(direction, 1.0f);
-
+	// Flee from the player
 	FNavLocation destination;
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(character->GetWorld());
@@ -48,16 +40,14 @@ void UFleeState::Update(AAIEnemy* character, const float DeltaTime)
 	if (distance > character->RangeOfSight)
 	{
 		// Change the state to Wander
-		// Print a message
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Wander"));
-
 		AFleeEnemy* fleeEnemy = Cast<AFleeEnemy>(character);
 		fleeEnemy->ChangeStateTo(UWanderState::StaticClass());
 	}
 	else if (distance < character->RangeOfDanger)
 	{
 		// Change the state to Dash
-
+		AFleeEnemy* fleeEnemy = Cast<AFleeEnemy>(character);
+		fleeEnemy->ChangeStateTo(UDashState::StaticClass());
 	}
 }
 

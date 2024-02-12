@@ -14,5 +14,10 @@ class AIBEHAVIOR_API UAttackState : public UBaseState
 {
 	GENERATED_BODY()
 	
+public:
 	void OnEnter(AAIEnemy* character) override;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	float JumpForce = 800.0f;
 };
