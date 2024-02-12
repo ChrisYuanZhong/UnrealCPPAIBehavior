@@ -22,51 +22,51 @@ void UWanderState::Update(AAIEnemy* character, float DeltaTime)
 		character->bIsMoving = true;
 	}
 
-	//// Calculate the distance to the player
-	//float distance = FVector::Dist(character->GetActorLocation(), UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation());
+	// Calculate the distance to the player
+	float distance = FVector::Dist(character->GetActorLocation(), UGameplayStatics::GetPlayerCharacter(character->GetWorld(), 0)->GetActorLocation());
 
-	//// Check if the player is close enough to the AI
-	//if (distance < character->RangeOfDanger)
-	//{
-	//	// If the character is a FleeEnemy
-	//	if (character->IsA(AFleeEnemy::StaticClass()))
-	//	{
-	//		// Change the state to Dash
-	//		// Print a message
-	//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Dash"));
-	//	}
-	//	// If the character is a ChaseEnemy
-	//	else if (character->IsA(AChaseEnemy::StaticClass()))
-	//	{
-	//		// Change the state to Attack
-	//		// Print a message
-	//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Attack"));
-	//	}
-	//}
-	//else if (distance < character->RangeOfSight)
-	//{
-	//	// If the character is a FleeEnemy
-	//	if (character->IsA(AFleeEnemy::StaticClass()))
-	//	{
-	//		// Change the state to Flee
-	//		// Print a message
-	//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Flee"));
+	// Check if the player is close enough to the AI
+	if (distance < character->RangeOfDanger)
+	{
+		// If the character is a FleeEnemy
+		if (character->IsA(AFleeEnemy::StaticClass()))
+		{
+			// Change the state to Dash
+			// Print a message
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Dash"));
+		}
+		// If the character is a ChaseEnemy
+		else if (character->IsA(AChaseEnemy::StaticClass()))
+		{
+			// Change the state to Attack
+			// Print a message
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Attack"));
+		}
+	}
+	else if (distance < character->RangeOfSight)
+	{
+		// If the character is a FleeEnemy
+		if (character->IsA(AFleeEnemy::StaticClass()))
+		{
+			// Change the state to Flee
+			// Print a message
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Flee"));
 
-	//		//AFleeEnemy* fleeEnemy = Cast<AFleeEnemy>(character);
-	//		//fleeEnemy->CurrentState = NewObject<UFleeState>();
-	//	}
-	//	// If the character is a ChaseEnemy
-	//	else if (character->IsA(AChaseEnemy::StaticClass()))
-	//	{
-	//		// Change the state to Chase
-	//		// Print a message
-	//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Chase"));
+			//AFleeEnemy* fleeEnemy = Cast<AFleeEnemy>(character);
+			//fleeEnemy->CurrentState = NewObject<UFleeState>();
+		}
+		// If the character is a ChaseEnemy
+		else if (character->IsA(AChaseEnemy::StaticClass()))
+		{
+			// Change the state to Chase
+			// Print a message
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("To Chase"));
 
-	//		//AChaseEnemy* chaseEnemy = Cast<AChaseEnemy>(character);
-	//		//chaseEnemy->CurrentState = NewObject<UChaseState>();
+			//AChaseEnemy* chaseEnemy = Cast<AChaseEnemy>(character);
+			//chaseEnemy->CurrentState = NewObject<UChaseState>();
 
-	//	}
-	//}
+		}
+	}
 }
 
 void UWanderState::NewDestination(AAIEnemy* character)

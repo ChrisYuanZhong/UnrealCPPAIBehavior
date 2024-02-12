@@ -26,7 +26,7 @@ public:
 
 	// Range of Danger
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float RangeOfDanger = 50.0f;
+	float RangeOfDanger = 200.0f;
 
 	bool bIsMoving = false;
 
