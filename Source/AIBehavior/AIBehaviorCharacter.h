@@ -46,7 +46,6 @@ class AAIBehaviorCharacter : public ACharacter
 
 public:
 	AAIBehaviorCharacter();
-	
 
 protected:
 
@@ -55,7 +54,6 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-			
 
 protected:
 	// APawn interface
