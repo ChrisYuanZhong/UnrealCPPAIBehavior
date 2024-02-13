@@ -16,14 +16,6 @@
 
 void UWanderState::Update(AAIEnemy* character, const float DeltaTime)
 {
-	// Wander around
-	if (!bIsMoving)
-	{
-		// Set a new destination
-		NewDestination(character);
-		bIsMoving = true;
-	}
-
 	// Calculate the distance to the player
 	float distance = FVector::Dist(character->GetActorLocation(), UGameplayStatics::GetPlayerCharacter(character->GetWorld(), 0)->GetActorLocation());
 
@@ -76,6 +68,9 @@ void UWanderState::OnEnter(AAIEnemy* character)
 	// Set the speed of the character
 	UCharacterMovementComponent* CharacterMovement = Cast<UCharacterMovementComponent>(character->GetMovementComponent());
 	CharacterMovement->MaxWalkSpeed = WanderSpeed;
+
+	// Set the destination
+	NewDestination(character);
 }
 
 void UWanderState::NewDestination(AAIEnemy* character)
@@ -92,9 +87,4 @@ void UWanderState::NewDestination(AAIEnemy* character)
 			AIController->MoveToLocation(destination.Location, 5.0f);
 		}
 	}
-}
-
-void UWanderState::SetNotMoving()
-{
-	bIsMoving = false;
 }

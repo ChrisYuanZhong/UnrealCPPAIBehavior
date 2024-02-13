@@ -19,6 +19,7 @@ void AAIEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	CurrentState = NewObject<UWanderState>();
+	CurrentState->OnEnter(this);
 }
 
 // Called every frame
@@ -52,14 +53,23 @@ void AAIEnemy::ChangeStateTo(const TSubclassOf<UBaseState> NewState)
 void AAIEnemy::OnStateChange()
 {
 	CurrentState->OnEnter(this);
+
+	if (CurrentState->IsA(UWanderState::StaticClass()))
+	{
+		bJustEnteredWander = true;
+	}
 }
 
 void AAIEnemy::OnMoveCompleted()
 {
-	if (UWanderState* wanderState = Cast<UWanderState>(CurrentState))
+	if (bJustEnteredWander && CurrentState->IsA(UWanderState::StaticClass()))
 	{
-		// Wait for 2 seconds and call the SetNotMoving function from the wanderState
+		bJustEnteredWander = false;
+	}
+	else if (UWanderState* wanderState = Cast<UWanderState>(CurrentState))
+	{
+		// Wait for 2 seconds and call the NewDestination function from the wanderState
 		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, wanderState, &UWanderState::SetNotMoving, 2.0f, false);
+        GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this, wanderState]() { wanderState->NewDestination(this); }, 2.0f, false);
 	}
 }

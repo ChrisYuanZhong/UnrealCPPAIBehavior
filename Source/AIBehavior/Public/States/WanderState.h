@@ -21,8 +21,6 @@ public:
 
 	void NewDestination(AAIEnemy* character);
 
-	void SetNotMoving();
-
 private:
 	UPROPERTY(EditAnywhere, Category = "Wander")
 	float WanderRadius = 1000.0f;

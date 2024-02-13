@@ -47,4 +47,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnMoveCompleted();
+
+private:
+	// This is to prevent the NewDestination() to be called from the OnMoveCompleted() triggered by movement from other states
+	bool bJustEnteredWander = false;
 };
